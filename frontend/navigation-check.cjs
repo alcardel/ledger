@@ -1,0 +1,22 @@
+const {chromium,expect}=require('@playwright/test');
+const assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch();const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://localhost:3000/');await expect(page).toHaveURL(/\/credit-overview$/);
+ await page.getByRole('button',{name:'Loan Origination',exact:true}).click();await expect(page).toHaveURL(/\/loan-origination$/);
+ await page.getByRole('button',{name:'Aarav Precision Components',exact:true}).click();await expect(page).toHaveURL(/\/loan-origination\/applications\/[^/]+\/summary$/);
+ await page.getByRole('button',{name:'Financials',exact:true}).click();await expect(page).toHaveURL(/\/financials$/);const deep=page.url();
+ await page.getByRole('button',{name:'View inputs for Revenue growth',exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible();assert.ok(!(await page.getByRole('dialog').innerText()).includes('mul('));await page.keyboard.press('Escape');
+ assert.equal(await page.getByText('revenue_growth',{exact:true}).count(),0);
+ await page.goBack();await expect(page).toHaveURL(/\/summary$/);await expect(page.getByRole('heading',{name:'Customer obligations & repayment history'})).toBeVisible();
+ await page.goForward();await expect(page).toHaveURL(deep);
+ await page.reload();await expect(page.getByRole('heading',{name:'Financial spreading & ratios'})).toBeVisible();await expect(page).toHaveURL(deep);
+ await page.getByRole('button',{name:'Close application and return to list'}).click();await expect(page).toHaveURL(/\/loan-origination$/);
+ await page.getByRole('button',{name:'Exceptions & Referrals',exact:true}).click();await expect(page).toHaveURL(/\/exceptions-referrals$/);
+ await page.goBack();await expect(page).toHaveURL(/\/loan-origination$/);
+ await page.getByRole('button',{name:'Employee Assignments',exact:true}).click();await expect(page).toHaveURL(/\/employee-assignments$/);
+ await page.getByRole('button',{name:'Credit Overview',exact:true}).hover();await expect(page.locator('aside [role=tooltip]').filter({hasText:'Monitor the lending pipeline'})).toBeVisible();
+ await page.screenshot({path:'../artifacts/navigation-tooltips.png'});
+ await page.getByRole('button',{name:'Credit Policy',exact:true}).click();await page.getByRole('button',{name:/Financial calculations/}).click();await expect(page).toHaveURL(/editor=metrics/);await page.reload();await expect(page.getByRole('button',{name:'Edit formula',exact:true}).first()).toBeVisible();await page.getByRole('button',{name:/Evidence definitions/}).click();await expect(page).toHaveURL(/editor=fields/);await page.goBack();await expect(page).toHaveURL(/editor=metrics/);await expect(page.getByRole('button',{name:'Edit formula',exact:true}).first()).toBeVisible();
+assert.deepEqual(errors,[]);console.log('PASS: module URLs, case/tab URLs, browser Back/Forward, deep-link refresh, return to list, readable formulas and module tooltips');await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

@@ -1,0 +1,7 @@
+const {chromium,expect}=require('@playwright/test');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1440,height:1050}});const errors=[];p.on('pageerror',e=>errors.push(e.message));
+await p.goto('http://localhost:3000/approval-workbench/applications/case-harbour-components/financials');await expect(p.getByRole('heading',{name:'Harbour Components',exact:true})).toBeVisible();const row=p.getByRole('row').filter({hasText:'Indicative eligible limit'});await expect(row).toContainText('₹80,00,000');await row.getByRole('button',{name:/View inputs/}).click();await expect(p.getByRole('dialog')).toContainText('6000000');await p.keyboard.press('Escape');
+await p.getByRole('button',{name:'Summary',exact:true}).click();await expect(p.locator('main')).toContainText('Demonstration Equipment Finance');await expect(p.locator('main')).toContainText('Aditi Rao');
+await p.getByRole('button',{name:/^Documents/}).click();await expect(p.getByRole('button',{name:'turnover-reconciliation.pdf',exact:true})).toBeVisible();
+await p.getByRole('button',{name:'History',exact:true}).click();await expect(p.getByRole('heading',{name:'Assessment history',exact:true})).toBeVisible();await p.screenshot({path:'../artifacts/harbour-history.png',fullPage:true});
+if(errors.length)throw Error(errors.join('\n'));console.log('PASS: Harbour customer, INR 80 lakh calculation, sources, EMI schedule, owner and assessment history');await b.close();})().catch(e=>{console.error(e);process.exit(1)});

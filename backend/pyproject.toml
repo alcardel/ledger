@@ -1,0 +1,10 @@
+[project]
+name = "credit-workbench"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["fastapi>=0.115,<1", "uvicorn[standard]>=0.34", "sqlalchemy>=2.0,<3", "psycopg[binary]>=3.2", "alembic>=1.14", "celery[redis]>=5.4", "pydantic-settings>=2.7", "httpx>=0.28", "python-multipart>=0.0.20", "pymupdf>=1.25", "pillow>=11", "pyjwt[crypto]>=2.10", "itsdangerous>=2.2", "reportlab>=4.3", "pytest>=8", "pytest-asyncio>=0.25"]
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+[tool.setuptools.packages.find]
+include = ["app*"]

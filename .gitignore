@@ -1,0 +1,24 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+.pytest_cache/
+node_modules/
+.next/
+data/
+*.tsbuildinfo
+artifacts/
+.DS_Store
+.next-stale-build/
+*.egg-info/
+
+# Private working files and generated deliverables
+.build/
+.impeccable/
+outputs/
+docs/pitch/
+*.log
+*.pem
+*.key
+.envrc
