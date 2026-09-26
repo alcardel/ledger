@@ -89,12 +89,6 @@ PostgreSQL tests require the local database. Unit/API tests use isolated in-memo
 - `frontend`: dashboard, application workbench and configurable policy editor.
 - `docs`: demonstration script, architecture notes and pitch material.
 
-## Operational limits and scaling
-
-This is a working local demo foundation, not production-certified lending infrastructure. It has a generic versioned record store with indexed tenant/kind/parent columns. Before a high-volume pilot, split high-volume transactions into dedicated tables, add retention/backup/restore operations, tested SSO lifecycle handling, malware scanning, object storage, stronger job recovery, organization provisioning, comprehensive document-specific extraction benchmarks, and load testing.
-
-Uploads support English/INR demo evidence up to 25 MB and 100 PDF pages. Password-protected PDFs currently require an unlocked replacement. New file connectors, full bank-specific statement parsers, multilingual/currency normalization, and unrecognized formula operators require development; these do not silently pass as supported.
-
 
 ## Expanded loan catalog and manual credit bureau entry
 
